@@ -11,6 +11,10 @@
     "strict": true,
     "noImplicitAny": true,
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      // "@utils/*": ["src/utils/*"]
+    }
   }
 }
