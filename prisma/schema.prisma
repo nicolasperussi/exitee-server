@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+  theme    = "dark"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  birthDate DateTime
+  gender    Gender
+  email     String
+  password  String
+  groups    Group[]
+  event     Event[]
+}
+
+model Group {
+  id           String  @id @default(uuid())
+  name         String
+  participants User[]
+  events       Event[]
+}
+
+model Event {
+  id        String   @id @default(uuid())
+  eventDate DateTime
+  Group     Group?   @relation(fields: [groupId], references: [id])
+  groupId   String?
+  attendees User[]
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  UNKNOWN
+}
