@@ -1,14 +1,24 @@
-import { PrismaClient } from '@prisma/client';
+import express from 'express';
+import dotenv from 'dotenv';
 
-const prisma = new PrismaClient();
+import authRouter from '@routes/authRouter';
+import groupRouter from '@routes/groupRouter';
+import eventRouter from '@routes/eventRouter';
 
-async function main() {
-	const user = await prisma.user.create({
-		data: {
-			name: 'Rafael',
-		},
-	});
-	console.log(user);
-}
+dotenv.config();
 
-main();
+const app = express();
+
+app.use(express.json());
+
+app.use('/user', authRouter);
+app.use('/group', groupRouter);
+app.use('/event', eventRouter);
+
+// TODO: Create a validator with zod
+
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+	console.clear();
+	console.log(`🚀 Server running on http://localhost:${PORT}`);
+});

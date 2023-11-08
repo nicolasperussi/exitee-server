@@ -5,22 +5,17 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator erd {
-  provider = "prisma-erd-generator"
-  theme    = "dark"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   name      String
   birthDate DateTime
   gender    Gender
-  email     String
+  email     String   @unique
   password  String
   groups    Group[]
   event     Event[]
@@ -36,8 +31,8 @@ model Group {
 model Event {
   id        String   @id @default(uuid())
   eventDate DateTime
-  Group     Group?   @relation(fields: [groupId], references: [id])
-  groupId   String?
+  group     Group    @relation(fields: [groupId], references: [id])
+  groupId   String
   attendees User[]
 }
 
